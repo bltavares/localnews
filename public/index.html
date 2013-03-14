@@ -14,6 +14,10 @@
     <a href="/refresh" id="refresh">Update feeds</a>
     <ul id="entries"></ul>
     <footer></footer>
+    <form id="import" action="/import" method="post" enctype="multipart/form-data">
+      <input name="import" type="file" accept="text/xml" />
+      <input type="submit" value="Import feeds" />
+    </form>
     </section>
   </body>
 </html>

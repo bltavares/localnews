@@ -3,6 +3,7 @@ require "sinatra"
 require "feedzirra"
 require "redis"
 require "json"
+require "nokogiri"
 require 'digest/md5'
 
 class App < Sinatra::Base
@@ -33,6 +34,13 @@ class App < Sinatra::Base
     redis.sadd("subscriptions", normalize_url(params[:url]))
     redirect "/"
   end
+
+  post '/import' do
+    doc = Nokogiri.XML(params['import'][:tempfile].read)
+    redis.sadd("subscriptions", doc.xpath("//outline/@xmlUrl").map(&:value))
+    redirect "/refresh"
+  end
+
 
   get '/unread' do
     redis.zcard("unread").to_json

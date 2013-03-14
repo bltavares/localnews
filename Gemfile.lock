@@ -44,6 +44,7 @@ PLATFORMS
 DEPENDENCIES
   feedzirra
   json
+  nokogiri
   puma
   redis
   sinatra
