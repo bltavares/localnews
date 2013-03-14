@@ -1,7 +1,5 @@
 # Localnews
 ## Your self-hosted feed reader
---
-
 
 ### Deploying on heroku
 
