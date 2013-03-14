@@ -6,3 +6,5 @@ gem "sinatra"
 gem "feedzirra"
 gem "redis"
 gem "puma"
+
+ruby "2.0.0"
