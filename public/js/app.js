@@ -12,6 +12,12 @@
       })
     });
 
+    var unread = 0;
+    $.get('/unread', function(data) {
+      unread = +data;
+      updateTitle(unread);
+    });
+
     $.get('/subscriptions', function(data) {
       $("footer").append(data.join());
     });
@@ -23,6 +29,11 @@
         $this.children("div").remove();
       }
       else{
+        if($this.hasClass("read")) {
+          unread--; 
+          updateTitle(unread);
+        } 
+        $this.addClass("read");
         $.get("/news/" + $this.attr("id"), function(data) {
           var element = $("<div />");
           var title = "<h3> <a href='" + data.url + "'>" + data.title + "</a></h3>";
@@ -32,5 +43,8 @@
         });
       }
     });
+    function updateTitle(unread) {
+      return document.title = "Localnews - " + unread;
+    }
   });
 })(jQuery)

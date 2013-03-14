@@ -25,6 +25,9 @@ body {
 #entries li.active > span {
   display: none;
 }
+#entries li.read {
+  background: #fafafa;
+}
 a {
   color: #ba9012;
   text-decoration: none;
