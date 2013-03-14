@@ -12,6 +12,9 @@
       <input type="text" name="url" />
       <input type="submit" value="Add feed"/>
     </form>
+    <form id='mark-all-as-read' method="post" action="/unread">
+      <input type="submit" value="Mark all as read"/>
+    </form>
     <a href="/refresh" id="refresh">Update feeds</a>
     <ul id="entries"></ul>
     <footer></footer>

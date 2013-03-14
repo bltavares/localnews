@@ -10,7 +10,7 @@ body {
   padding: 0;
   width: 100%;
 }
-#add-url {
+#add-url, #mark-all-as-read {
   display: inline;
 }
 #entries li {

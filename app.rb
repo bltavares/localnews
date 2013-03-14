@@ -46,6 +46,15 @@ class App < Sinatra::Base
     redis.zcard("unread").to_json
   end
 
+  post '/unread' do
+    redis.multi do
+      redis.zunionstore "read", ["unread", "read"]
+      redis.del "unread"
+    end
+    redirect "/"
+  end
+
+
   get '/news/unread' do
     unread_keys = redis.zrange("unread", 0, -1)
     if unread_keys.empty?

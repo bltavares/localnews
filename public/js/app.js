@@ -30,7 +30,7 @@
       }
       else{
         if($this.hasClass("read")) {
-          unread--; 
+          unread = unread - 1; 
           updateTitle(unread);
         } 
         $this.addClass("read");
