@@ -69,7 +69,10 @@ class App < Sinatra::Base
   get '/refresh' do
     subscriptions(redis).each do |url|
       feed  = Feedzirra::Feed.fetch_and_parse(url)
-      return redirect "/" if feed.kind_of? Numeric
+      if feed.nil? or feed.is_a? Fixnum
+        logger.error "Bad feed url: " + url
+        next
+      end
 
       feed.entries.each do |entry| 
         key = Digest::MD5.hexdigest(entry.url.to_s)
