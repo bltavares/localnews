@@ -21,12 +21,16 @@ class App < Sinatra::Base
     redis.smembers("subscriptions")
   end
 
+  def normalize_url(url)
+    url.chomp.strip.downcase.gsub(/\/$/, "")
+  end
+
   get '/subscriptions' do
     subscriptions(redis).to_json
   end
 
   post '/subscriptions' do
-    redis.sadd("subscriptions", params[:url])
+    redis.sadd("subscriptions", normalize_url(params[:url]))
     redirect "/"
   end
 
