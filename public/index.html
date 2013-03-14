@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <script src="/js/jquery/jquery.min.js"></script>
+    <script src="/js/underscore/underscore-min.js"></script>
+    <script src="/js/app.js"></script>
+    <link href="/css/app.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <section id="content" >
+    <form id="add-url" method="post" action="/subscriptions">
+      <input type="text" name="url" />
+      <input type="submit" value="Add feed"/>
+    </form>
+    <a href="/refresh" id="refresh">Update feeds</a>
+    <ul id="entries"></ul>
+    <footer></footer>
+    </section>
+  </body>
+</html>

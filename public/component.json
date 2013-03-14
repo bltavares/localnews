@@ -1,0 +1,9 @@
+{
+  "name": "static",
+  "version": "0.0.0",
+  "dependencies": {
+    "jquery": "~1.9.1",
+    "js": "js",
+    "underscore": "~1.4.4"
+  }
+}
