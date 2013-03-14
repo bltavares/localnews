@@ -12,6 +12,10 @@
       })
     });
 
+    $("#refresh").on('click', function(e) { 
+      $(this).text("Updating...");
+    });
+
     var unread = 0;
     $.get('/unread', function(data) {
       unread = +data;
@@ -34,6 +38,8 @@
           updateTitle(unread);
         } 
         $this.addClass("read");
+        index = list.children().index($this);
+        $(document).scrollTo(this, {axis: 'y', margin: true});
         $.get("/news/" + $this.attr("id"), function(data) {
           var element = $("<div />");
           var title = "<h3> <a href='" + data.url + "'>" + data.title + "</a></h3>";
@@ -41,10 +47,14 @@
           $this.append(element);
           $this.addClass("active");
         });
+
       }
     });
-    function updateTitle(unread) {
-      return document.title = "Localnews - " + unread;
-    }
+    var index = -1;
+    KeyboardJS.on('j', list.children().eq(index + 1).click);
+    KeyboardJS.on('k', list.children().eq(index - 1).click);
   });
+  function updateTitle(unread) {
+    return document.title = "Localnews - " + unread;
+  }
 })(jQuery)

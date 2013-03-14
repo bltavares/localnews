@@ -4,6 +4,8 @@
   "dependencies": {
     "jquery": "~1.9.1",
     "js": "js",
-    "underscore": "~1.4.4"
+    "underscore": "~1.4.4",
+    "KeyboardJS": "https://github.com/RobertWHurst/KeyboardJS.git#~0.4.0",
+    "jquery.scrollTo": "~1.4.4"
   }
 }
