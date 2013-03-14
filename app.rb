@@ -26,6 +26,24 @@ class App < Sinatra::Base
     url.chomp.strip.downcase.gsub(/\/$/, "")
   end
 
+  def mark_as_read(redis, key)
+    entry = Hash[JSON.parse(redis.hget("news", key))]
+    redis.multi do
+      redis.zadd "read", DateTime.parse(entry["published"].to_s).to_i , key
+      redis.zrem "unread", key
+    end
+    entry
+  end
+
+  def mark_as_unread(redis, key)
+    entry = Hash[JSON.parse(redis.hget("news", key))]
+    redis.multi do
+      redis.zadd "unread", DateTime.parse(entry["published"].to_s).to_i , key
+      redis.zrem "read", key
+    end
+    entry
+  end
+
   get '/subscriptions' do
     subscriptions(redis).to_json
   end
@@ -67,12 +85,16 @@ class App < Sinatra::Base
 
   get '/news/:id' do
     key = params[:id]
-    entry = Hash[JSON.parse(redis.hget("news", key))]
-    redis.multi do
-      redis.zadd "read", DateTime.parse(entry["published"].to_s).to_i , key
-      redis.zrem "unread", key
+    mark_as_read(redis, key).to_json
+  end
+
+  put '/news/:id' do
+    key = params[:id]
+    if params["state"] == "read"
+      mark_as_read(redis, key).to_json
+    else
+      mark_as_unread(redis, key).to_json
     end
-    entry.to_json
   end
 
   get '/refresh' do

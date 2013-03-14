@@ -57,6 +57,16 @@
     KeyboardJS.on('v', function() {
       window.open(list.children().eq(index).find("div > h3 > a:first").attr("href"));
     });
+    KeyboardJS.on('m', function() {
+      var entry = list.children().eq(index);
+      entry.removeClass("read");
+      unread = unread + 1;
+      updateTitle(unread);
+      $.ajax('/news/' + entry.attr("id"), {
+        type: "put",
+        data: { "state": "unread" } 
+      });
+    });
   });
   function updateTitle(unread) {
     return document.title = "Localnews - " + unread;
