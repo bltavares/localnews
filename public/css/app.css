@@ -23,6 +23,9 @@ body {
 #entries li > div {
   padding: 2%;
 }
+ul#entries li.active {
+  border-width: 3px;
+}
 #entries li.active > span {
   display: none;
 }

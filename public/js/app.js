@@ -28,11 +28,7 @@
 
     list.on("click", "li", function(e) {
       $this = $(this);
-      if($this.hasClass("active")) {
-        $this.removeClass("active");
-        $this.children("div").remove();
-      }
-      else{
+      if(!$this.hasClass("active")) {
         if($this.hasClass("read")) {
           unread = unread - 1; 
           updateTitle(unread);
@@ -45,10 +41,11 @@
           var title = "<h3> <a href='" + data.url + "' target='_blank'>" + data.title + "</a></h3>";
           element.append(title).append(data.content || data.summary);
           $this.append(element);
-          $this.addClass("active");
+          $this.addClass("open");
         });
-
       }
+      list.children().removeClass('active').children("div").remove();
+      $this.addClass('active');
     });
     var index = -1;
     KeyboardJS.on('j', function() {
@@ -58,9 +55,7 @@
       list.children().eq(index - 1).click();
     });
     KeyboardJS.on('v', function() {
-      if(index >= 0) {
-        window.open(list.children().eq(index).find("div > h3 > a:first").attr("href"));
-      }
+      window.open(list.children().eq(index).find("div > h3 > a:first").attr("href"));
     });
   });
   function updateTitle(unread) {
