@@ -23,7 +23,7 @@
     });
 
     $.get('/subscriptions', function(data) {
-      $("footer").append(data.join());
+      $("footer").append(data.join(", "));
     });
 
     list.on("click", "li", function(e) {
@@ -51,8 +51,12 @@
       }
     });
     var index = -1;
-    KeyboardJS.on('j', list.children().eq(index + 1).click);
-    KeyboardJS.on('k', list.children().eq(index - 1).click);
+    KeyboardJS.on('j', function() {
+      list.children().eq(index + 1).click();
+    });
+    KeyboardJS.on('k', function() {
+      list.children().eq(index - 1).click();
+    });
   });
   function updateTitle(unread) {
     return document.title = "Localnews - " + unread;
