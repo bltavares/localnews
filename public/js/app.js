@@ -2,7 +2,7 @@
   $(function() {
 
     var list = $("ul");
-
+    $.get('/cleanup')
     $.get('/news/unread', function(data) {
       _.each(_.pairs(data), function(entry) {
         var key = entry.shift();

@@ -6,6 +6,8 @@ require "json"
 require "nokogiri"
 require 'digest/md5'
 
+A_MONTH_IN_SECONDS = 2.62974e6
+
 class App < Sinatra::Base
 
   uri = URI.parse(ENV["REDISTOGO_URL"] || "http://localhost:6379")
@@ -16,6 +18,11 @@ class App < Sinatra::Base
 
   before do
     content_type 'application/json'
+  end
+
+  def early_than_a_month(i)
+    current_time = Time.now.to_i
+    (current_time - i) <= A_MONTH_IN_SECONDS
   end
 
   def subscriptions(redis)
@@ -110,14 +117,30 @@ class App < Sinatra::Base
       end
 
       feed.entries.each do |entry| 
-        key = Digest::MD5.hexdigest(entry.url.to_s)
-        read = redis.zscore "read", key
-        redis.zadd "unread", entry.published.to_i, key unless read
-        redis.hsetnx "titles", key, entry.title
-        redis.hsetnx "news", key, entry.to_json
+        published = entry.published.to_i
+        if early_than_a_month(published)
+          key = Digest::MD5.hexdigest(entry.url.to_s)
+          read = redis.zscore "read", key
+          redis.zadd "unread", published, key unless read
+          redis.hsetnx "titles", key, entry.title
+          redis.hsetnx "news", key, entry.to_json
+        end
       end
     end
     redirect "/"
+  end
+
+  get '/cleanup' do
+    time = Time.now.to_i
+    past = time - A_MONTH_IN_SECONDS
+    read_entries = redis.zrangebyscore("read", "-inf", past)
+    unless read_entries.empty?
+      redis.multi do
+        redis.hdel("news", read_entries)
+        redis.hdel("titles", read_entries)
+        redis.zremrangebyscore("read", "-inf", past)
+      end
+    end
   end
 
   get '/'do
