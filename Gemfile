@@ -7,5 +7,6 @@ gem "feedzirra"
 gem "redis"
 gem "puma"
 gem "nokogiri"
+gem "hiredis"
 
 ruby "2.0.0"

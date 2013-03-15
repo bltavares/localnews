@@ -5,13 +5,15 @@ require "redis"
 require "json"
 require "nokogiri"
 require 'digest/md5'
+require "hiredis"
+
 
 A_MONTH_IN_SECONDS = 2.62974e6
 
 class App < Sinatra::Base
 
   uri = URI.parse(ENV["REDISTOGO_URL"] || "http://localhost:6379")
-  redis = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
+  redis = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password, :driver => :hiredis)
 
   enable :static
   set :environment, :production
