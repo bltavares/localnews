@@ -50,7 +50,6 @@
         } 
         $this.addClass("read");
         index = list.children().index($this);
-        $(document).scrollTo(this, {axis: 'y', margin: true});
         $.get("/news/" + $this.attr("id"), function(data) {
           var element = $("<div />");
           var title = "<h3> <a href='" + data.url + "' target='_blank'>" + data.title + "</a></h3>";
@@ -61,6 +60,7 @@
       }
       list.children().removeClass('active').children("div").remove();
       $this.addClass('active');
+      $(document).scrollTo(this, {axis: 'y', margin: true});
     });
     var index = -1;
     KeyboardJS.on('j', function() {
