@@ -48,6 +48,10 @@ class App < Sinatra::Base
     subscriptions(redis).to_json
   end
 
+  delete '/subscriptions' do
+    redis.srem("subscriptions", params[:url])
+  end
+
   post '/subscriptions' do
     redis.sadd("subscriptions", normalize_url(params[:url]))
     redirect "/"

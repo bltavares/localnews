@@ -11,7 +11,7 @@ body {
   padding: 0;
   width: 100%;
 }
-#add-url, #mark-all-as-read {
+#add-url, #mark-all-as-read, #import {
   display: inline;
 }
 #entries li {
@@ -42,3 +42,10 @@ footer {
   color: #ba9012;
   font-style: italic;
 }
+footer span {
+  margin-right: 1%;
+}
+footer a { 
+  margin-left: 0.5%;
+  color: red;
+} 

@@ -22,8 +22,23 @@
       updateTitle(unread);
     });
 
+    var footer = $("footer");
+    footer.on("click", "a", function(e) {
+      e.preventDefault();
+      var $this = $(this);
+      $.ajax($this.attr("href"), {
+        type: "delete",
+        data: { url: $this.data("url") },
+        success: function(data) {
+          $this.parent().remove();
+        }
+      });
+    });
     $.get('/subscriptions', function(data) {
-      $("footer").append(data.join(", "));
+      _.each(data, function(url) {
+        var el = $("<span />").text(url).append("<a href='/subscriptions' class='remove-subscription' data-url='"+url+"'>x Remove feed</a>");
+        footer.append(el);
+      });
     });
 
     list.on("click", "li", function(e) {
